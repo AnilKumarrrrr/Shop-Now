@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %} Searched Result {% endblock %}
+{% block css %}
+<style>
+.card:hover {
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  transition: all 0.3s ease-in-out;
+}
+
+.card-body {
+  height: 180px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.add-btn {
+  margin-right: 10px;
+}
+
+.view-btn {
+  margin-left: 10px;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+</style>
+
+{% endblock %}
+{% block body %}
+{% if search %}
+
+<div class="container mt-2 mb-3">
+
+  <div class="row">
+    {% for product in products %}
+    <div class="col-lg-4 my-4">
+      <div class="card shadow align-items-center">
+        <img src="/media/{{product.image}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <hr>
+          {% if request.user.is_authenticated %}
+          <button data-product="{{product.id}}" data-action="add" class="btn btn-dark add-btn update-cart">Add To Cart</button>
+          <a href="/product_view/{{product.id}}/" class="btn btn-outline-dark view-btn">View</a>
+          {% else %}
+          <button class="btn btn-dark" disabled>Login to add the item</button>
+          {% endif %}
+          <div class="price">₹{{product.price}}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+{% url 'index' as index_url %}
+{% autoescape off %}
+<script>
+    window.location.href = "{{ index_url }}";
+</script>
+{% endautoescape %}
+{% endif %}
+{% endblock %}
