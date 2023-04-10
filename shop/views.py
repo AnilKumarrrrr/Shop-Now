@@ -12,7 +12,6 @@ def index(request):
     items = data['items']
     order = data['order']
     cartItems = data['cartItems']
-
     products = Product.objects.all()
     return render(request, "index.html", {'products':products, 'cartItems':cartItems})
 
